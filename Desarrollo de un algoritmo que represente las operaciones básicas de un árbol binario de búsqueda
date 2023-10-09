@@ -1,0 +1,129 @@
+#Desarrollo de un algoritmo que represente las operaciones básicas de un árbol binario de búsqueda
+class Node:
+    def _init_(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+
+
+def insert(root, data):
+    if root is None:
+        return Node(data)
+    else:
+        if data < root.data:
+            root.left = insert(root.left, data)
+        else:
+            root.right = insert(root.right, data)
+
+    return root
+
+
+def search(root, data):
+    if root is None or root.data == data:
+        return root
+    if data < root.data:
+        return search(root.left, data)
+    return search(root.right, data)
+
+
+def find_min_value_node(node):
+    current = node
+    while current.left is not None:
+        current = current.left
+    return current
+
+
+def delete_node(root, data):
+    if root is None:
+        return root
+
+    if data < root.data:
+        root.left = delete_node(root.left, data)
+    elif data > root.data:
+        root.right = delete_node(root.right, data)
+    else:
+        if root.left is None:
+            temp = root.right
+            root = None
+            return temp
+        elif root.right is None:
+            temp = root.left
+            root = None
+            return temp
+
+        temp = find_min_value_node(root.right)
+        root.data = temp.data
+        root.right = delete_node(root.right, temp.data)
+
+    return root
+
+
+def pre_order(root):
+    if root:
+        print(root.data, end=" ")
+        pre_order(root.left)
+        pre_order(root.right)
+
+
+def in_order(root):
+    if root:
+        in_order(root.left)
+        print(root.data, end=" ")
+        in_order(root.right)
+
+
+def post_order(root):
+    if root:
+        post_order(root.left)
+        post_order(root.right)
+        print(root.data, end=" ")
+
+
+def print_menu():
+    print("1. Insertar elemento")
+    print("2. Buscar elemento")
+    print("3. Eliminar elemento")
+    print("4. Recorrido previo")
+    print("5. Recorrido simétrico")
+    print("6. Recorrido posterior")
+    print("7. Salir del programa")
+
+
+root = None
+
+while True:
+    print("\nÁrbol binario de búsqueda:")
+    print_menu()
+    choice = int(input("Selecciona una opción: "))
+
+    if choice == 1:
+        data = int(input("Ingrese el elemento a insertar: "))
+        root = insert(root, data)
+    elif choice == 2:
+        data = int(input("Ingrese el elemento a buscar: "))
+        node = search(root, data)
+        if node:
+            print("Elemento encontrado:", node.data)
+        else:
+            print("Elemento no encontrado")
+    elif choice == 3:
+        data = int(input("Ingrese el elemento a eliminar: "))
+        root = delete_node(root, data)
+    elif choice == 4:
+        print("Recorrido previo:")
+        pre_order(root)
+        print()
+    elif choice == 5:
+        print("Recorrido simétrico:")
+        in_order(root)
+        print()
+    elif choice == 6:
+        print("Recorrido posterior:")
+        post_order(root)
+        print()
+    elif choice == 7:
+        break
+    else:
+        print("Opción no válida. Inténtalo de nuevo.")
+
+print("Programa finalizado.")
