@@ -1,6 +1,6 @@
 #Desarrollo de un algoritmo que represente las operaciones básicas de un árbol binario de búsqueda
 class Node:
-    def _init_(self, data):
+    def __init__(self, data):
         self.left = None
         self.right = None
         self.data = data
